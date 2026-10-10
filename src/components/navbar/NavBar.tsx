@@ -1,7 +1,5 @@
-
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../libs/AuthContext";
-
 const NavBar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
@@ -14,8 +12,12 @@ const NavBar = () => {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `nav-link${isActive ? " active" : ""}`;
 
+  const isAdmin = user?.role === "ADMIN";
+  const isDoctor = user?.role === "DOCTOR";
+  const isPatient = user?.role === "PATIENT";
+
   return (
-    <nav className="navbar navbar-expand-lg mc-navbar">
+    <nav className="navbar navbar-expand-lg mc-navbar d-print-none">
       <div className="container">
         <Link className="navbar-brand" to="/">
           <span className="brand-mark">✚</span>
@@ -33,7 +35,7 @@ const NavBar = () => {
                 Appointments
               </NavLink>
 
-              {user?.role === "DOCTOR" && (
+              {(isDoctor || isAdmin) && (
                 <>
                   <NavLink className={linkClass} to="/consultations">
                     Consultations
@@ -44,7 +46,7 @@ const NavBar = () => {
                 </>
               )}
 
-              {user?.role === "PATIENT" && (
+              {isPatient && (
                 <NavLink className={linkClass} to="/prescriptions">
                   Prescriptions
                 </NavLink>
@@ -56,13 +58,9 @@ const NavBar = () => {
         <div className="d-flex align-items-center gap-2">
           {isAuthenticated ? (
             <>
-              <Link
-                className="nav-user d-none d-sm-inline-block"
-                to="/profile"
-              >
+              <Link className="nav-user d-none d-sm-inline-block" to="/profile">
                 {user?.fullName}
               </Link>
-
               <button
                 className="btn btn-outline-primary btn-sm"
                 onClick={handleLogout}

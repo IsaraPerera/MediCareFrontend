@@ -7,6 +7,7 @@ import NotFound from "./components/other/NotFound";
 import UserView from "./components/User/UserView";
 import UserEdit from "./components/User/UserEdit";
 import DoctorView from "./components/Doctor/DoctorView";
+import DoctorProfileEdit from "./components/Doctor/DoctorProfileEdit";
 import BookAppointment from "./components/Appointment/BookAppointment";
 import AppointmentView from "./components/Appointment/AppointmentView";
 import ConsultationView from "./components/Consultation/ConsultationView";
@@ -26,6 +27,9 @@ function App() {
         <Route path="/profile/edit" element={<ProtectedRoute><UserEdit /></ProtectedRoute>} />
 
         <Route path="/doctors" element={<ProtectedRoute><DoctorView /></ProtectedRoute>} />
+        <Route path="/doctor/settings"
+          element={<ProtectedRoute roles={["DOCTOR"]}><DoctorProfileEdit /></ProtectedRoute>} />
+
         <Route path="/doctors/:doctorId/book"
           element={<ProtectedRoute roles={["PATIENT", "RECEPTIONIST"]}><BookAppointment /></ProtectedRoute>} />
 
